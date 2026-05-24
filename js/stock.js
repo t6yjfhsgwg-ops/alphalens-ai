@@ -1,5 +1,6 @@
 import { renderScoreBadge } from "./data.js";
 import { fetchStock } from "./api.js";
+import { initSearch } from "./app.js";
 
 let scoreChart = null;
 
@@ -195,4 +196,7 @@ function renderScoreChart(history, currentScore) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", initStockPage);
+document.addEventListener("DOMContentLoaded", () => {
+  initSearch("header-search", "header-search-results");
+  initStockPage();
+});

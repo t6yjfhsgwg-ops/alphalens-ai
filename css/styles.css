@@ -115,10 +115,29 @@ img {
   color: var(--text);
 }
 
+.header-search {
+  flex: 1;
+  max-width: 300px;
+  margin: 0;
+  min-width: 0;
+}
+
+.header-search input {
+  padding: 10px 14px 10px 40px;
+  font-size: 0.88rem;
+}
+
+.header-search svg {
+  left: 12px;
+  width: 18px;
+  height: 18px;
+}
+
 .header-actions {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .region-toggle {
@@ -955,8 +974,18 @@ section {
 }
 
 @media (max-width: 768px) {
+  .header-inner {
+    flex-wrap: wrap;
+  }
+
   .nav-links {
     display: none;
+  }
+
+  .header-search {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: none;
   }
 
   .detail-grid {
