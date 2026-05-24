@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Analysis | AlphaLens AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><span class="logo-icon">α</span> AlphaLens AI</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="rankings.html">Rankings</a></li>
+          <li><a href="rankings.html#trade-ideas">Trade Ideas</a></li>
+          <li><a href="index.html#how-it-works">How It Works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="pricing.html" class="btn btn-outline">Log In</a>
+        <a href="pricing.html" class="btn btn-primary">Join Free</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="stock-content">
+    <section class="stock-hero">
+      <div class="container">
+        <div class="stock-header">
+          <div class="stock-title">
+            <h1 id="stock-ticker">—</h1>
+            <p id="stock-name">Loading…</p>
+            <p id="stock-sector" style="color:var(--text-muted);font-size:0.9rem;margin-top:4px"></p>
+            <div id="live-quote" class="live-quote" aria-live="polite">
+              <span id="live-price" class="live-price">—</span>
+              <span id="live-change" class="live-change"></span>
+              <span class="live-badge">Live</span>
+            </div>
+          </div>
+          <div class="card score-panel">
+            <div>
+              <p style="font-size:0.78rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">AI Score</p>
+              <p style="font-size:0.85rem;color:var(--text-muted)">3-month outlook</p>
+              <p id="score-note" style="font-size:0.72rem;color:var(--text-muted);margin-top:4px"></p>
+            </div>
+            <div id="main-score"></div>
+          </div>
+        </div>
+
+
+        <div id="score-breakdown" class="score-breakdown"></div>
+
+        <div class="detail-grid">
+          <div class="card">
+            <h3 style="margin-bottom:16px">Score Evolution</h3>
+            <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:16px">Historical AI Score over the past 12 months</p>
+            <div class="chart-container">
+              <canvas id="score-chart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:16px">Alpha Signals</h3>
+            <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:16px">Explainable AI — factors driving this score</p>
+            <ul id="signals-list" class="signals-list"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">© 2026 AlphaLens AI. Demo — not financial advice.</div>
+  </footer>
+
+  <script type="module" src="js/stock.js"></script>
+</body>
+</html>

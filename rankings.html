@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stock Rankings | AlphaLens AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><span class="logo-icon">α</span> AlphaLens AI</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="rankings.html" class="active">Rankings</a></li>
+          <li><a href="#trade-ideas">Trade Ideas</a></li>
+          <li><a href="index.html#how-it-works">How It Works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <a href="pricing.html" class="btn btn-primary">Join Free</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1>US Stock & ETF Rankings</h1>
+        <p>All assets ranked by AI Score — probability of beating the market in the next 3 months.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div id="full-ranking-tabs" class="tabs">
+          <button type="button" class="tab active" data-tab="stocks">Stocks</button>
+          <button type="button" class="tab" data-tab="etfs">ETFs</button>
+          <button type="button" class="tab" data-tab="ideas">Trade Ideas</button>
+        </div>
+        <div class="table-wrap">
+          <table id="rankings-table" class="data-table">
+            <thead>
+              <tr>
+                <th>Rank</th><th>Company</th><th>Country</th><th>Price</th><th>AI Score</th><th>Change</th>
+                <th>Day Chg</th><th>Fundamental</th><th>Technical</th><th>Sentiment</th><th>Low Risk</th><th>Perf YTD</th>
+              </tr>
+            </thead>
+            <tbody id="rankings-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="trade-ideas">
+      <div class="container">
+        <div class="section-header">
+          <h2>Trade Ideas</h2>
+          <p>Historical buy/sell signals with 60%+ win rate since 2017.</p>
+        </div>
+        <div class="features-grid">
+          <div class="card feature-card">
+            <h3>Strong Buy Signals</h3>
+            <p>Stocks where AI Buy signals historically beat the market 65%+ of the time.</p>
+            <a href="stock.html?ticker=NVDA">View NVDA →</a>
+          </div>
+          <div class="card feature-card">
+            <h3>Sell Signals</h3>
+            <p>Identify underperformers before major drawdowns with AI-driven sell ratings.</p>
+            <a href="stock.html?ticker=INTC">View INTC →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">© 2026 AlphaLens AI. Demo — not financial advice.</div>
+  </footer>
+
+  <script type="module">
+    import { initFullRankings } from "./js/app.js";
+    initFullRankings("rankings-body");
+  </script>
+</body>
+</html>

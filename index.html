@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AlphaLens AI | AI Stock Picker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">α</span>
+        AlphaLens AI
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="rankings.html" class="active">Rankings</a></li>
+          <li><a href="rankings.html#trade-ideas">Trade Ideas</a></li>
+          <li><a href="index.html#how-it-works">How It Works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </nav>
+      <div class="header-actions">
+        <div class="region-toggle">
+          <button type="button" class="active">USA</button>
+          <button type="button">Europe</button>
+        </div>
+        <a href="pricing.html" class="btn btn-outline">Log In</a>
+        <a href="pricing.html" class="btn btn-primary">Join Free</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>AI-Powered Stock Picking</h1>
+        <p class="hero-sub">
+          Invest with the odds in your favor. Get unique insights, boost your portfolios,
+          and make smart data-driven investment decisions.
+        </p>
+        <div class="search-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="search" id="hero-search" placeholder="Search stocks, ETFs, or investment themes for AI analysis" autocomplete="off" />
+          <div id="search-results" class="search-results"></div>
+        </div>
+        <div class="popular-tags">
+          <span>Popular:</span>
+          <span class="tag" data-ticker="NVDA">NVDA</span>
+          <span class="tag" data-ticker="AAPL">AAPL</span>
+          <span class="tag" data-ticker="MSFT">MSFT</span>
+          <span class="tag" data-ticker="TSLA">TSLA</span>
+          <span class="tag" data-ticker="META">META</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="rankings-section">
+      <div class="container">
+        <div id="ranking-tabs" class="tabs">
+          <button type="button" class="tab active" data-tab="stocks">Stocks ranking</button>
+          <button type="button" class="tab" data-tab="etfs">ETFs ranking</button>
+          <button type="button" class="tab" data-tab="ideas">Trade Ideas</button>
+        </div>
+
+        <div class="section-header">
+          <h2>Best Stocks and ETFs Picked by AI</h2>
+          <p>For a 3-month investment horizon. Ranked by AI Score — probability of beating the market.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table id="rankings-table" class="data-table">
+            <thead>
+              <tr>
+                <th>Rank</th><th>Company</th><th>Country</th><th>Price</th><th>AI Score</th><th>Change</th>
+                <th>Day Chg</th><th>Fundamental</th><th>Technical</th><th>Sentiment</th><th>Low Risk</th><th>Perf YTD</th>
+              </tr>
+            </thead>
+            <tbody id="rankings-body"></tbody>
+          </table>
+        </div>
+        <a href="rankings.html" class="see-all-link">See the full US stocks ranking →</a>
+      </div>
+    </section>
+
+    <section id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <h2>Smart Investing Made Easy for Everyone</h2>
+          <p>Our AI analyzes 10,000+ features per stock daily and rates the probability of beating the market.</p>
+        </div>
+        <div class="score-scale">
+          <div class="scale-segment low">Low</div>
+          <div class="scale-segment avg">Average</div>
+          <div class="scale-segment high">High</div>
+        </div>
+        <div class="scale-labels">
+          <span>Probability of Beating the Market in 3 Months</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-header">
+          <h2>Data Analyzed to Calculate the AI Score</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="card stat-card">
+            <div class="stat-value">900+</div>
+            <div class="stat-label">Daily indicators per stock</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-value">10K+</div>
+            <div class="stat-label">Daily features per stock</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-value">5B+</div>
+            <div class="stat-label">Features used to learn</div>
+          </div>
+        </div>
+        <p style="text-align:center;color:var(--text-muted);margin-top:20px;max-width:640px;margin-inline:auto">
+          600+ technical, 150+ fundamental, and 150+ sentiment daily indicators per stock,
+          processed into more than 10,000 daily features by our Artificial Intelligence.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-header">
+          <h2>Use Cases</h2>
+        </div>
+        <div class="features-grid">
+          <div class="card feature-card">
+            <h3>Pick the Winners. Avoid the Losers</h3>
+            <p>Stocks with AI Score 10/10 historically outperformed the market by</p>
+            <div class="metric">+21.05%</div>
+            <p style="margin-top:8px;font-size:0.85rem">annualized alpha over 3 months since 2017</p>
+          </div>
+          <div class="card feature-card">
+            <h3>Explainable AI — No Black Boxes</h3>
+            <p>See the alpha signals behind every score: fundamentals, technicals, and sentiment — all transparent.</p>
+            <a href="stock.html?ticker=AAPL">See AAPL analysis →</a>
+          </div>
+          <div class="card feature-card">
+            <h3>Track Score Evolution</h3>
+            <p>Monitor daily AI Score changes. Identify the best moment to buy when scores are rising.</p>
+            <a href="stock.html?ticker=TSLA">Check TSLA historical scores →</a>
+          </div>
+          <div class="card feature-card">
+            <h3>Portfolio Tools & Alerts</h3>
+            <p>Average AI Score, diversity metrics, and daily upgrade/downgrade alerts for your watchlist.</p>
+            <a href="pricing.html">Create your first portfolio →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <p class="trust-badge">Trusted by over 150,000 investors</p>
+        <div class="testimonials">
+          <div class="card testimonial">
+            <blockquote>"An exceptionally powerful tool that reveals what really drives a stock. Actionable ideas presented clearly — the performance speaks for itself."</blockquote>
+            <cite>— Sarah M., Portfolio Manager</cite>
+          </div>
+          <div class="card testimonial">
+            <blockquote>"The explainable AI scores give me confidence. I can see exactly why a stock is rated highly before I commit capital."</blockquote>
+            <cite>— James K., Independent Investor</cite>
+          </div>
+          <div class="card testimonial">
+            <blockquote>"Trade Ideas with historical win rates changed how I approach entries. Simple scores, deep data behind them."</blockquote>
+            <cite>— Elena R., UK</cite>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="cta-banner">
+          <h2>Start Making Smarter Investment Decisions</h2>
+          <p>Our AI-powered stock analytics platform helps you pick the best stocks and optimize portfolio performance.</p>
+          <a href="pricing.html" class="btn btn-primary btn-lg">Join for Free</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="logo" style="margin-bottom:12px">
+            <span class="logo-icon">α</span> AlphaLens AI
+          </a>
+          <p style="color:var(--text-muted);font-size:0.88rem;margin-top:8px">AI stock analytics for smarter investing. Demo site inspired by modern fintech platforms.</p>
+        </div>
+        <div>
+          <h4>Product</h4>
+          <ul>
+            <li><a href="rankings.html">Stock Rankings</a></li>
+            <li><a href="rankings.html">ETF Rankings</a></li>
+            <li><a href="rankings.html#trade-ideas">Trade Ideas</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="index.html#how-it-works">How It Works</a></li>
+            <li><a href="stock.html?ticker=NVDA">Sample Analysis</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Account</h4>
+          <ul>
+            <li><a href="pricing.html">Sign Up Free</a></li>
+            <li><a href="pricing.html">Log In</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 AlphaLens AI. Demo project — not financial advice.</div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { initSearch, initRankingTable, initTabs, initPopularTags, initRegionToggle } from "./js/app.js";
+    initSearch("hero-search", "search-results");
+    initRankingTable("rankings-body", "stocks");
+    initTabs("ranking-tabs", "rankings-body");
+    initPopularTags();
+    initRegionToggle();
+  </script>
+</body>
+</html>
