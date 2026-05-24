@@ -3,7 +3,7 @@
  * - Local: uses localhost:3000 automatically
  * - Production: set your Railway/Render URL below after deploying the backend
  */
-const PRODUCTION_API_URL = "";
+const PRODUCTION_API_URL = "https://alphalens-ai-production.up.railway.app";
 
 function resolveApiBase() {
   const meta = document.querySelector('meta[name="api-base"]');
