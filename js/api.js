@@ -38,6 +38,17 @@ export async function sendChatMessage(message) {
   return apiPost("/api/chat", { message });
 }
 
+export async function fetchPrediction(ticker, horizon = "3M") {
+  return apiFetch(
+    `/api/predict/${encodeURIComponent(ticker)}?horizon=${encodeURIComponent(horizon)}`
+  );
+}
+
+export async function fetchRecommendations({ type = "stocks", limit = 8, sort = "return" } = {}) {
+  const params = new URLSearchParams({ type, limit: String(limit), sort });
+  return apiFetch(`/api/recommendations?${params}`);
+}
+
 async function apiFetch(path) {
   if (!isApiConfigured()) {
     throw new ApiError(

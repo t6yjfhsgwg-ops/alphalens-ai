@@ -4,6 +4,12 @@ import cors from "cors";
 import { computeScores } from "./scoring.js";
 import { generateChatReply } from "./chat.js";
 import {
+  generatePrediction,
+  rankRecommendations,
+  STOCK_UNIVERSE,
+  ETF_UNIVERSE,
+} from "./recommendations.js";
+import {
   saveStockProfile,
   getCachedQuote,
   saveQuote,
@@ -203,11 +209,85 @@ async function fetchStockBundle(ticker) {
     fetchProfileFromFinnhub(ticker),
     fetchScoresForTicker(ticker, quote),
   ]);
-  return { ticker, name: profile.name, sector: profile.sector, quote, scores };
+  const prediction = generatePrediction({ scores, quote: { ...quote, ticker } });
+  return { ticker, name: profile.name, sector: profile.sector, quote, scores, prediction };
 }
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, message: "AlphaLens API is running", db: getDbStats() });
+});
+
+app.get("/api/predict/:ticker", async (req, res) => {
+  const ticker = normalizeTicker(req.params.ticker);
+  if (!isValidTicker(ticker)) {
+    return res.status(400).json({ error: "Invalid ticker symbol" });
+  }
+  if (!requireApiKey(res)) return;
+
+  const horizon = String(req.query.horizon || "3M").toUpperCase();
+
+  try {
+    const quote = await getQuote(ticker);
+    const [profile, scores] = await Promise.all([
+      fetchProfileFromFinnhub(ticker),
+      fetchScoresForTicker(ticker, quote),
+    ]);
+    const prediction = generatePrediction({ scores, quote: { ...quote, ticker }, horizon });
+    res.json({
+      ticker,
+      name: profile.name,
+      sector: profile.sector,
+      quote,
+      scores,
+      prediction,
+    });
+  } catch (err) {
+    console.error(`Predict error (${ticker}):`, err.message);
+    res.status(404).json({ error: err.message || "Prediction failed", ticker });
+  }
+});
+
+app.get("/api/recommendations", async (req, res) => {
+  if (!requireApiKey(res)) return;
+
+  const type = String(req.query.type || "stocks").toLowerCase();
+  const limit = Math.min(15, Math.max(1, parseInt(req.query.limit, 10) || 8));
+  const sort = String(req.query.sort || "return");
+
+  let universe = STOCK_UNIVERSE;
+  if (type === "etfs") universe = ETF_UNIVERSE;
+  else if (type === "all") universe = [...STOCK_UNIVERSE, ...ETF_UNIVERSE];
+
+  const items = [];
+
+  for (const ticker of universe) {
+    try {
+      const quote = await getQuote(ticker);
+      const [profile, scores] = await Promise.all([
+        fetchProfileFromFinnhub(ticker),
+        fetchScoresForTicker(ticker, quote),
+      ]);
+      const prediction = generatePrediction({ scores, quote: { ...quote, ticker } });
+      items.push({
+        ticker,
+        name: profile.name,
+        sector: profile.sector,
+        prediction,
+      });
+    } catch (err) {
+      console.warn(`Recommendation skip (${ticker}):`, err.message);
+    }
+    await sleep(200);
+  }
+
+  const ranked = rankRecommendations(items, { sort, limit });
+  res.json({
+    generatedAt: Date.now(),
+    scanned: universe.length,
+    analyzed: items.length,
+    sort,
+    ...ranked,
+  });
 });
 
 app.post("/api/chat", async (req, res) => {
@@ -291,7 +371,8 @@ app.get("/api/stock/:ticker", async (req, res) => {
       fetchProfileFromFinnhub(ticker),
       fetchScoresForTicker(ticker, quote),
     ]);
-    res.json({ ...profile, quote, scores, scoreHistory: getScoreHistory(ticker) });
+    const prediction = generatePrediction({ scores, quote: { ...quote, ticker } });
+    res.json({ ...profile, quote, scores, prediction, scoreHistory: getScoreHistory(ticker) });
   } catch (err) {
     console.error(`Stock fetch error (${ticker}):`, err.message);
     res.status(404).json({ error: err.message || "Stock not found", ticker });

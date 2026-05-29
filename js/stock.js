@@ -1,6 +1,7 @@
 import { renderScoreBadge } from "./data.js";
 import { fetchStock } from "./api.js";
 import { initSearch } from "./app.js";
+import { renderPredictionPanel } from "./recommendations.js";
 
 let scoreChart = null;
 
@@ -132,6 +133,10 @@ async function initStockPage() {
     renderBreakdown(document.getElementById("score-breakdown"), scores);
     renderSignals(document.getElementById("signals-list"), scores.signals);
     renderScoreChart(stock.scoreHistory || { labels: [], data: [] }, scores.aiScore);
+
+    if (stock.prediction) {
+      renderPredictionPanel(stock.prediction, document.getElementById("prediction-panel"));
+    }
   } catch (err) {
     console.error("Stock load error:", err);
     if (err?.code === "OFFLINE") {

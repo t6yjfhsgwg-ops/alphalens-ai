@@ -35,16 +35,20 @@ function formatChange(change, changePercent) {
   return `${sign}${changePercent.toFixed(2)}% today (${sign}${change.toFixed(2)})`;
 }
 
-function formatStockBlock({ ticker, name, sector, quote, scores }) {
-  const signals = (scores.signals || []).slice(0, 3).map((s) => `• ${s}`).join("\n");
+function formatStockBlock({ ticker, name, sector, quote, scores, prediction }) {
+  const signals = (scores.signals || []).slice(0, 3).map((s) => `• ${s.name || s}`).join("\n");
+  const predLine = prediction
+    ? `Prediction: **${prediction.signal}** · 3M return **${prediction.predictedReturn >= 0 ? "+" : ""}${prediction.predictedReturn}%** · Win prob **${prediction.winProbability}%**\n`
+    : "";
   return (
     `**${ticker}** — ${name}${sector && sector !== "—" ? ` (${sector})` : ""}\n` +
     `Price: **${formatUsd(quote.price)}** (${formatChange(quote.change, quote.changePercent)})\n` +
     `AI Score: **${scores.aiScore}/10** (${scoreLabel(scores.aiScore)})\n` +
+    predLine +
     `Breakdown: Fundamental ${scores.fundamental}/10 · Technical ${scores.technical}/10 · ` +
     `Sentiment ${scores.sentiment}/10 · Low Risk ${scores.lowRisk}/10\n` +
     (signals ? `Key signals:\n${signals}\n` : "") +
-    `[View full analysis](stock.html?ticker=${ticker})`
+    `[View full analysis](stock.html?ticker=${ticker}) · [Predictions](recommendations.html?ticker=${ticker})`
   );
 }
 
@@ -55,6 +59,7 @@ function helpReply() {
     "Higher is better. Sub-scores cover fundamentals, technicals, sentiment, and risk.\n\n" +
     "**Try asking:**\n" +
     "• \"Analyze NVDA\"\n" +
+    "• \"Predict TSLA\"\n" +
     "• \"How is Apple doing?\"\n" +
     "• \"Compare AAPL and MSFT\"\n\n" +
     "_Not financial advice — for education and research only._"

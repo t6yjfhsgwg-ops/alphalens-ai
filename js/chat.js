@@ -3,7 +3,7 @@ import { sendChatMessage } from "./api.js";
 const WELCOME =
   "Hi! I'm **AlphaLens AI**. Ask about any stock — e.g. \"Analyze NVDA\" or \"How is Apple doing?\"";
 
-const SUGGESTIONS = ["Analyze NVDA", "Compare AAPL and MSFT", "What is AI Score?"];
+const SUGGESTIONS = ["Analyze NVDA", "Predict TSLA", "Compare AAPL and MSFT", "What is AI Score?"];
 
 function escapeHtml(text) {
   return text

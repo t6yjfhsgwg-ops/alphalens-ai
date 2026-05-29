@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Predictions | AlphaLens AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><span class="logo-icon">α</span> AlphaLens AI</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="rankings.html">Rankings</a></li>
+          <li><a href="recommendations.html" class="active">Predictions</a></li>
+          <li><a href="index.html#how-it-works">How It Works</a></li>
+          <li><a href="pricing.html">Pricing</a></li>
+        </ul>
+      </nav>
+      <div class="header-search search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="search" id="header-search" placeholder="Search ticker or company..." autocomplete="off" aria-label="Search stocks" />
+        <div id="header-search-results" class="search-results"></div>
+      </div>
+      <div class="header-actions">
+        <a href="pricing.html" class="btn btn-primary">Join Free</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1>AI Recommendation Engine</h1>
+        <p>
+          Rule-based predictions from live fundamentals, technicals, sentiment, and risk data.
+          3-month outlook with expected return, win probability, and price targets.
+        </p>
+        <p id="rec-status" class="rec-status">Loading recommendations…</p>
+      </div>
+    </section>
+
+    <section class="container" style="padding-bottom:24px">
+      <div class="card predict-lookup">
+        <h2 style="margin-bottom:12px">Predict any stock</h2>
+        <form id="predict-form" class="predict-form-row">
+          <input type="text" id="predict-ticker" placeholder="Enter ticker (e.g. NVDA)" maxlength="10" autocomplete="off" />
+          <button type="submit" class="btn btn-primary">Generate prediction</button>
+        </form>
+        <div id="predict-result"></div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="section-header">
+        <h2>Top AI Picks — Bullish</h2>
+        <p>Highest expected 3-month returns from our scanned universe.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th><th>Company</th><th>Signal</th><th>3M Return</th>
+              <th>Win %</th><th>Confidence</th><th>AI Score</th><th>Price</th><th>Target</th>
+            </tr>
+          </thead>
+          <tbody id="rec-buys-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="container" style="padding:48px 0">
+      <div class="section-header">
+        <h2>Stocks to Avoid — Bearish</h2>
+        <p>Lowest expected returns; model suggests caution or reduce exposure.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th><th>Company</th><th>Signal</th><th>3M Return</th>
+              <th>Win %</th><th>Confidence</th><th>AI Score</th><th>Price</th><th>Target</th>
+            </tr>
+          </thead>
+          <tbody id="rec-sells-body"></tbody>
+        </table>
+      </div>
+      <p class="predict-disclaimer" style="margin-top:24px">
+        Predictions use the AlphaLens v1 model (fundamental 30%, technical 30%, sentiment 20%, risk 20%).
+        Not financial advice. For education and research only.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">© 2026 AlphaLens AI. Demo — not financial advice.</div>
+  </footer>
+
+  <script type="module">
+    import { initSearch } from "./js/app.js";
+    import { initChat } from "./js/chat.js";
+    import { initRecommendationsPage } from "./js/recommendations.js";
+    initSearch("header-search", "header-search-results");
+    initChat();
+    initRecommendationsPage();
+  </script>
+</body>
+</html>
