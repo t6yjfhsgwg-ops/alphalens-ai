@@ -973,6 +973,182 @@ section {
   display: none !important;
 }
 
+/* AI Chat widget */
+#alphalens-chat-root {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  font-family: var(--font);
+}
+
+.chat-fab {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), #6366f1);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 20px var(--accent-glow);
+  display: grid;
+  place-items: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.chat-fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 28px rgba(59, 130, 246, 0.45);
+}
+
+.chat-fab-icon {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+.chat-panel {
+  position: absolute;
+  bottom: 68px;
+  right: 0;
+  width: min(380px, calc(100vw - 32px));
+  height: min(520px, calc(100vh - 120px));
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.chat-header strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.chat-header-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.chat-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.chat-close:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-msg {
+  max-width: 92%;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.chat-msg-user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: white;
+}
+
+.chat-msg-assistant {
+  align-self: flex-start;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.chat-msg-assistant a {
+  color: var(--accent-light);
+  text-decoration: underline;
+}
+
+.chat-typing {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.chat-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 12px 8px;
+}
+
+.chat-chip {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--accent-light);
+  font-size: 0.75rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.chat-chip:hover {
+  background: var(--bg-hover);
+}
+
+.chat-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-deep);
+}
+
+.chat-form input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 0.88rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.chat-form input:focus {
+  border-color: var(--accent);
+}
+
+.chat-send {
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
 @media (max-width: 768px) {
   .header-inner {
     flex-wrap: wrap;
@@ -986,6 +1162,16 @@ section {
     order: 3;
     flex: 1 1 100%;
     max-width: none;
+  }
+
+  #alphalens-chat-root {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .chat-panel {
+    width: calc(100vw - 32px);
+    right: 0;
   }
 
   .detail-grid {

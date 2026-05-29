@@ -9,6 +9,35 @@ export class ApiError extends Error {
   }
 }
 
+async function apiPost(path, body) {
+  if (!isApiConfigured()) {
+    throw new ApiError(
+      "Production API URL not configured. Set PRODUCTION_API_URL in js/config.js.",
+      "NOT_CONFIGURED"
+    );
+  }
+
+  let res;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    throw new ApiError("Cannot reach API. Start locally with: cd server && npm start", "OFFLINE");
+  }
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new ApiError(err.error || `Request failed (${res.status})`, "API_ERROR");
+  }
+  return res.json();
+}
+
+export async function sendChatMessage(message) {
+  return apiPost("/api/chat", { message });
+}
+
 async function apiFetch(path) {
   if (!isApiConfigured()) {
     throw new ApiError(

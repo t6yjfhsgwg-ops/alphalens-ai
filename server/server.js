@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { computeScores } from "./scoring.js";
+import { generateChatReply } from "./chat.js";
 import {
   saveStockProfile,
   getCachedQuote,
@@ -196,8 +197,37 @@ function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
+async function fetchStockBundle(ticker) {
+  const quote = await getQuote(ticker);
+  const [profile, scores] = await Promise.all([
+    fetchProfileFromFinnhub(ticker),
+    fetchScoresForTicker(ticker, quote),
+  ]);
+  return { ticker, name: profile.name, sector: profile.sector, quote, scores };
+}
+
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, message: "AlphaLens API is running", db: getDbStats() });
+});
+
+app.post("/api/chat", async (req, res) => {
+  if (!requireApiKey(res)) return;
+
+  const message = String(req.body?.message || "").trim();
+  if (!message) {
+    return res.status(400).json({ error: "Provide message in JSON body" });
+  }
+
+  try {
+    const result = await generateChatReply(message, {
+      fetchStockBundle,
+      searchSymbols: (q) => searchSymbolsFromFinnhub(q),
+    });
+    res.json(result);
+  } catch (err) {
+    console.error("Chat error:", err.message);
+    res.status(500).json({ error: err.message || "Chat failed" });
+  }
 });
 
 app.get("/api/search", async (req, res) => {

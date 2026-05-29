@@ -240,6 +240,8 @@
 
   <script type="module">
     import { initSearch, initRankingTable, initTabs, initPopularTags, initRegionToggle } from "./js/app.js";
+    import { initChat } from "./js/chat.js";
+    initChat();
     initSearch("hero-search", "search-results");
     initSearch("header-search", "header-search-results");
     initRankingTable("rankings-body", "stocks");
