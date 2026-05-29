@@ -1,6 +1,13 @@
 import { fetchRecommendations, fetchPrediction } from "./api.js";
 import { renderScoreBadge } from "./data.js";
 
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 function signalClass(signal) {
   if (signal.includes("Strong Buy") || signal === "Buy") return "signal-buy";
   if (signal.includes("Strong Sell") || signal === "Sell") return "signal-sell";
@@ -105,7 +112,7 @@ export async function initRecommendationsPage() {
   statusEl.textContent = "Scanning universe with live data…";
 
   try {
-    const data = await fetchRecommendations({ type: "all", limit: 8 });
+    const data = await fetchRecommendations({ type: "stocks", limit: 8 });
     statusEl.textContent = `Updated ${new Date(data.generatedAt).toLocaleTimeString()} · ${data.scanned} symbols analyzed`;
 
     buysBody.innerHTML =
@@ -131,8 +138,12 @@ export async function initRecommendationsPage() {
       });
     });
   } catch (err) {
-    statusEl.textContent = err.message || "Failed to load recommendations";
-    buysBody.innerHTML = `<tr><td colspan="9" class="api-error-msg">${statusEl.textContent}</td></tr>`;
+    const hint =
+      err?.code === "NOT_FOUND"
+        ? " Redeploy Railway from GitHub (main branch), then wait 2 min."
+        : "";
+    statusEl.textContent = (err.message || "Failed to load recommendations") + hint;
+    buysBody.innerHTML = `<tr><td colspan="9" class="api-error-msg">${escapeHtml(statusEl.textContent)}</td></tr>`;
   }
 
   if (predictForm && predictInput && predictBox) {

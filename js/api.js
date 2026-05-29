@@ -29,7 +29,14 @@ async function apiPost(path, body) {
   }
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new ApiError(err.error || `Request failed (${res.status})`, "API_ERROR");
+    const msg = err.error || `Request failed (${res.status})`;
+    if (res.status === 404) {
+      throw new ApiError(
+        `${msg} — Redeploy Railway from GitHub if this is a new feature (chat/predictions).`,
+        "NOT_FOUND"
+      );
+    }
+    throw new ApiError(msg, "API_ERROR");
   }
   return res.json();
 }
@@ -68,7 +75,14 @@ async function apiFetch(path) {
   }
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new ApiError(err.error || `Request failed (${res.status})`, "API_ERROR");
+    const msg = err.error || `Request failed (${res.status})`;
+    if (res.status === 404) {
+      throw new ApiError(
+        `${msg} — Check API URL in js/config.js or redeploy Railway (latest code has /api/predict and /api/recommendations).`,
+        "NOT_FOUND"
+      );
+    }
+    throw new ApiError(msg, "API_ERROR");
   }
   return res.json();
 }

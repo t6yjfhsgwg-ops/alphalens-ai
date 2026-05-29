@@ -243,7 +243,7 @@ app.get("/api/predict/:ticker", async (req, res) => {
     });
   } catch (err) {
     console.error(`Predict error (${ticker}):`, err.message);
-    res.status(404).json({ error: err.message || "Prediction failed", ticker });
+    res.status(422).json({ error: err.message || "Prediction failed", ticker });
   }
 });
 
@@ -419,6 +419,13 @@ app.get("/api/quotes", async (req, res) => {
   );
 
   res.json(Object.fromEntries(entries));
+});
+
+app.use((req, res) => {
+  res.status(404).json({
+    error: `Route not found: ${req.method} ${req.path}`,
+    hint: "Available: GET /api/health, /api/stock/:ticker, /api/predict/:ticker, /api/recommendations, POST /api/chat",
+  });
 });
 
 app.listen(PORT, () => {
