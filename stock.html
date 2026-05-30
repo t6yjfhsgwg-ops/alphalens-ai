@@ -28,6 +28,7 @@
         <input type="search" id="header-search" placeholder="Search ticker or company..." autocomplete="off" aria-label="Search stocks" />
         <div id="header-search-results" class="search-results"></div>
       </div>
+      <span id="api-status" class="api-status">Connecting…</span>
       <div class="header-actions">
         <a href="pricing.html" class="btn btn-outline">Log In</a>
         <a href="pricing.html" class="btn btn-primary">Join Free</a>
@@ -88,6 +89,8 @@
 
   <script type="module">
     import { initChat } from "./js/chat.js";
+    import { initApiStatus } from "./js/status.js";
+    initApiStatus();
     initChat();
   </script>
   <script type="module" src="js/stock.js"></script>

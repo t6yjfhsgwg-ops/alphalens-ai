@@ -30,10 +30,15 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin) || allowedOrigins.includes("*")) {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        allowedOrigins.includes("*") ||
+        /\.vercel\.app$/i.test(origin)
+      ) {
         callback(null, true);
       } else {
-        callback(null, true); // allow Vercel preview URLs during setup
+        callback(null, true);
       }
     },
   })
@@ -259,25 +264,31 @@ app.get("/api/recommendations", async (req, res) => {
   else if (type === "all") universe = [...STOCK_UNIVERSE, ...ETF_UNIVERSE];
 
   const items = [];
+  const batchSize = 4;
 
-  for (const ticker of universe) {
-    try {
-      const quote = await getQuote(ticker);
-      const [profile, scores] = await Promise.all([
-        fetchProfileFromFinnhub(ticker),
-        fetchScoresForTicker(ticker, quote),
-      ]);
-      const prediction = generatePrediction({ scores, quote: { ...quote, ticker } });
-      items.push({
-        ticker,
-        name: profile.name,
-        sector: profile.sector,
-        prediction,
-      });
-    } catch (err) {
-      console.warn(`Recommendation skip (${ticker}):`, err.message);
-    }
-    await sleep(200);
+  for (let i = 0; i < universe.length; i += batchSize) {
+    const batch = universe.slice(i, i + batchSize);
+    const settled = await Promise.allSettled(
+      batch.map(async (ticker) => {
+        const quote = await getQuote(ticker);
+        const [profile, scores] = await Promise.all([
+          fetchProfileFromFinnhub(ticker),
+          fetchScoresForTicker(ticker, quote),
+        ]);
+        const prediction = generatePrediction({ scores, quote: { ...quote, ticker } });
+        return {
+          ticker,
+          name: profile.name,
+          sector: profile.sector,
+          prediction,
+        };
+      })
+    );
+    settled.forEach((r, j) => {
+      if (r.status === "fulfilled") items.push(r.value);
+      else console.warn(`Recommendation skip (${batch[j]}):`, r.reason?.message);
+    });
+    if (i + batchSize < universe.length) await sleep(350);
   }
 
   const ranked = rankRecommendations(items, { sort, limit });

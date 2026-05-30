@@ -32,6 +32,7 @@
         <input type="search" id="header-search" placeholder="Search ticker or company..." autocomplete="off" aria-label="Search stocks" />
         <div id="header-search-results" class="search-results"></div>
       </div>
+      <span id="api-status" class="api-status">Connecting…</span>
       <div class="header-actions">
         <div class="region-toggle">
           <button type="button" class="active">USA</button>
@@ -243,6 +244,8 @@
   <script type="module">
     import { initSearch, initRankingTable, initTabs, initPopularTags, initRegionToggle } from "./js/app.js";
     import { initChat } from "./js/chat.js";
+    import { initApiStatus } from "./js/status.js";
+    initApiStatus();
     initChat();
     initSearch("hero-search", "search-results");
     initSearch("header-search", "header-search-results");
